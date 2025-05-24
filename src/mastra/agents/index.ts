@@ -42,7 +42,7 @@ const memory = new Memory({
 const mcp = new MCPClient({
   servers: {
     supabase: {
-      "command": "/Users/user/.volta/bin/npx",
+      "command": "/usr/bin/npx",
       "args": [
         "-y",
         "@supabase/mcp-server-supabase@latest",
