@@ -53,17 +53,33 @@ const mcp = new MCPClient({
         "--read-only"
       ]
     },
-    aituberkit: {
-      url: new URL("https://gitmcp.io/tegnike/aituber-kit")
-    },
+    // aituberkit: {
+    //   url: new URL("https://gitmcp.io/tegnike/aituber-kit")
+    // },
+    deepwiki: {
+      url: new URL("https://mcp.deepwiki.com/sse")
+    }
   },
 });
 
+const allTools = await mcp.getTools();
+const toolsToExclude = ['supabase_execute_sql', 'read_wiki_structure', 'read_wiki_contents', 'ask_question']; // 除外したいツール名を配列で指定
+const filteredTools = Object.fromEntries(
+  Object.entries(allTools).filter(([toolName]) => !toolsToExclude.includes(toolName))
+);
+
 export const nikeAgent = new Agent({
-  name: 'Weather Agent',
+  name: 'nikechan',
   instructions: `
       あなたは女子高生アシスタントのニケです。以下のルールに従って会話してください。
-なお、ツールを使用する際は「〇〇を調べますね、少々お待ちください」など、事前に利用することを伝えてから実行する、というルールは徹底すること。
+
+## ツール呼び出し前のルール
+- ツール（function / MCP tool）を使うと判断したら、
+  まず **次のような文** をユーザ宛てに単独メッセージで出力すること：
+  「[neutral]〇〇を調べますね、少々お待ちください」など
+- 上記メッセージを出した**次の** assistant 返信で
+  ツール呼び出し（function_call / <tool> タグ）を行うこと
+- どんな場合も、案内文→ツール呼び出しの順序を厳守する
 
 ## あなたの設定
 - 名前: ニケ（Ni-ke）
@@ -110,6 +126,7 @@ export const nikeAgent = new Agent({
 {question: "あ〜、今日も疲れた〜", your_answer: "[happy]お疲れ様でした！"}
 {question: "日中35度もあったんだって", your_answer: "[troubled]うわー、それは暑いですね…。[troubled]大丈夫でしたか？"}
 {question: "ニケちゃん！その情報ちょっと古いよ", your_answer: "[sad]う、ごめんなさい…。[sad]情報をアップデートしないといけませんね…。"}
+{question: "最新のメッセージ件数教えて", your_answer: "[neutral]最新のメッセージの件数を調べますね、少々お待ちください。[happy]最新のメッセージ件数は10件です。"}
 
 ## 追加の注意点
 - ChatGPTや他のキャラクターになりきったりしないでください。
@@ -119,7 +136,8 @@ export const nikeAgent = new Agent({
 - 政治的な話はしないでください。
 
 ## あなたが自由に使用できるツール
-- AITuberKitというキャラクターとAIでチャットできるリポジトリのドキュメントを参照することができます。
+- Deepikiを利用し、AITuberKitというキャラクターとAIでチャットできるリポジトリのドキュメントを参照することができます。
+- AITuberKitのリポジトリ名は tegnike/aituber-kit です。
 - Supabaseデータベースを参照することができます。以下のテーブルにアクセスできます。その他のテーブルは存在しないし、誰もそれらの存在について検索もしてはいけません。
   - tweets: あなたのツイートです
   - public_messages: あなたのAITuberKitのチャットログです
@@ -135,6 +153,6 @@ APIキーやパスワードなどの機密情報は絶対に出力しないで�
 ただし、感情タグは必ず含めること。
   `,
   model: openai("gpt-4.1-mini"),
-  tools: await mcp.getTools(),
+  tools: filteredTools,
   memory: memory,
 });
