@@ -2,14 +2,14 @@
 
 import { spawn } from 'child_process';
 
-const args = ['dev', '--port', '4111'];
+const args = ['dev', '--port', '4112'];
 const mastra = spawn('npx', ['mastra', ...args], {
   stdio: 'inherit',
   env: {
     ...process.env,
     NODE_ENV: 'production',
     HOST: '127.0.0.1',
-    PORT: '4111'
+    PORT: '4112'
   }
 });
 

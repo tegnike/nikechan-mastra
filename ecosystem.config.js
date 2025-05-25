@@ -10,7 +10,7 @@ export default {
       env: {
         NODE_ENV: 'production',
         HOST: '127.0.0.1',
-        PORT: 4111,
+        PORT: 4112,
         UV_THREADPOOL_SIZE: 16
       },
       error_file: './logs/err.log',
