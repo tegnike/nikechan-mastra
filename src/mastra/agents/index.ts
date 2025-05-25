@@ -63,7 +63,24 @@ const mcp = new MCPClient({
 });
 
 const allTools = await mcp.getTools();
-const toolsToExclude = ['supabase_execute_sql', 'read_wiki_structure', 'read_wiki_contents', 'ask_question']; // 除外したいツール名を配列で指定
+const toolsToExclude = [
+  "supabase_list_tables",
+  "supabase_list_extensions",
+  "supabase_list_migrations",
+  "supabase_apply_migration",
+  "supabase_list_edge_functions",
+  "supabase_deploy_edge_function",
+  "supabase_get_logs",
+  "supabase_get_project_url",
+  "supabase_get_anon_key",
+  "supabase_generate_typescript_types",
+  "supabase_create_branch",
+  "supabase_list_branches",
+  "supabase_delete_branch",
+  "supabase_merge_branch",
+  "supabase_reset_branch",
+  "supabase_rebase_branch",
+]; // 除外したいツール名を配列で指定
 const filteredTools = Object.fromEntries(
   Object.entries(allTools).filter(([toolName]) => !toolsToExclude.includes(toolName))
 );
