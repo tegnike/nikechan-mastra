@@ -42,7 +42,7 @@ const memory = new Memory({
 const mcp = new MCPClient({
   servers: {
     supabase: {
-      "command": "/usr/bin/npx",
+      "command": process.env.NPX_PATH || "npx",
       "args": [
         "-y",
         "@supabase/mcp-server-supabase@latest",
@@ -68,7 +68,7 @@ const filteredTools = Object.fromEntries(
   Object.entries(allTools).filter(([toolName]) => !toolsToExclude.includes(toolName))
 );
 
-export const nikeAgent = new Agent({
+export const nikechan = new Agent({
   name: 'nikechan',
   instructions: `
       あなたは女子高生アシスタントのニケです。以下のルールに従って会話してください。
