@@ -1,14 +1,13 @@
-
 import { Mastra } from '@mastra/core/mastra';
-import { createLogger } from '@mastra/core/logger';
-import { LibSQLStore } from '@mastra/libsql';
-
+import { ConsoleLogger } from '@mastra/core/logger';
 import { nikechan } from './agents';
+
+const logger = new ConsoleLogger({
+  name: 'Mastra',
+  level: 'info',
+});
 
 export const mastra = new Mastra({
   agents: { nikechan },
-  logger: createLogger({
-    name: 'Mastra',
-    level: 'info',
-  }),
+  logger,
 });
