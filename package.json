@@ -24,6 +24,7 @@
     "@mastra/mcp": "^0.10.0",
     "@mastra/memory": "^0.10.0",
     "@mastra/pg": "^0.10.0",
+    "langsmith": "^0.3.30",
     "zod": "^3.25.6"
   },
   "devDependencies": {
