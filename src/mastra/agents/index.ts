@@ -61,7 +61,7 @@ const mcp = new MCPClient({
       },
     },
     "firecrawl": {
-      "command": "/Users/user/.volta/bin/npx",
+      "command": "npx",
       "args": ["-y", "firecrawl-mcp"],
       "env": {
         "FIRECRAWL_API_KEY": "fc-4f5e4d8e28894688a00c049adac6225a",
