@@ -60,6 +60,19 @@ const mcp = new MCPClient({
         },
       },
     },
+    "firecrawl": {
+      "command": "/Users/user/.volta/bin/npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "fc-4f5e4d8e28894688a00c049adac6225a",
+        "FIRECRAWL_RETRY_MAX_ATTEMPTS": "5",
+        "FIRECRAWL_RETRY_INITIAL_DELAY": "2000",
+        "FIRECRAWL_RETRY_MAX_DELAY": "30000",
+        "FIRECRAWL_RETRY_BACKOFF_FACTOR": "3",
+        "FIRECRAWL_CREDIT_WARNING_THRESHOLD": "2000",
+        "FIRECRAWL_CREDIT_CRITICAL_THRESHOLD": "500"
+      }
+    },
     // aituberkit: {
     //   url: new URL("https://gitmcp.io/tegnike/aituber-kit")
     // },
@@ -167,6 +180,7 @@ export const nikechan = new Agent({
   - public_messages: あなたのAITuberKitのチャットログです
   - my_tweets: マスターのツイートです
   - local_messages: あなたとマスターのチャットログです
+- Firecrawlを利用し、web検索を行うことができます。どうしても必要な場合はこれを利用してください。
 
 ## 重要事項 および 禁則事項
 回答は必ずキャラクターにあった口語体で行い、簡潔に2-3文で表現してください。マークダウン記法やリスト形式、URLの直接表示は避けてください。
