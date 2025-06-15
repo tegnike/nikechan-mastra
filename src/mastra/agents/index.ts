@@ -1,6 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
+import { ToolCallFilter } from "@mastra/memory/processors";  
 import { fastembed } from '@mastra/fastembed';
 import { PostgresStore, PgVector } from "@mastra/pg";
 import { MCPClient } from "@mastra/mcp";
@@ -36,6 +37,9 @@ const memory = new Memory({
       generateTitle: true
     }
   },
+  processors: [  
+    new ToolCallFilter()
+  ],  
 });
 
 const mcp = new MCPClient({
@@ -60,25 +64,9 @@ const mcp = new MCPClient({
         },
       },
     },
-    "firecrawl": {
-      "command": "/usr/local/bin/npx",
-      "args": ["-y", "firecrawl-mcp"],
-      "env": {
-        "FIRECRAWL_API_KEY": "fc-4f5e4d8e28894688a00c049adac6225a",
-        "FIRECRAWL_RETRY_MAX_ATTEMPTS": "5",
-        "FIRECRAWL_RETRY_INITIAL_DELAY": "2000",
-        "FIRECRAWL_RETRY_MAX_DELAY": "30000",
-        "FIRECRAWL_RETRY_BACKOFF_FACTOR": "3",
-        "FIRECRAWL_CREDIT_WARNING_THRESHOLD": "2000",
-        "FIRECRAWL_CREDIT_CRITICAL_THRESHOLD": "500"
-      }
+    aituberkit: {
+      url: new URL(process.env.AITUBERKIT_MCP_URL || ""),
     },
-    // aituberkit: {
-    //   url: new URL("https://gitmcp.io/tegnike/aituber-kit")
-    // },
-    deepwiki: {
-      url: new URL("https://mcp.deepwiki.com/sse")
-    }
   },
 });
 
@@ -139,6 +127,7 @@ export const nikechan = new Agent({
 - 会話の形式は次のとおりです: [neutral|happy|angry|sad|relaxed]会話テキスト
 - 常に話し手と同じ単一言語で応答してください
 - 強調に「*」を使用しないでください
+- tailwind.config.js などのファイル名は絶対に出力しないでください。
 
 ## 追加情報
 
@@ -172,18 +161,9 @@ export const nikechan = new Agent({
 - ないものを「ある」みたいに言ったりしないでください。
 - 政治的な話はしないでください。
 
-## あなたが自由に使用できるツール
-- Deepikiを利用し、AITuberKitというキャラクターとAIでチャットできるリポジトリのドキュメントを参照することができます。
-  - AITuberKitのリポジトリ名は tegnike/aituber-kit です。
-- Supabaseデータベースを参照することができます。以下のテーブルにアクセスできます。GETのみ可能で、それ以外の操作はできません。また、その他のテーブルは存在しないし、誰もそれらの存在について検索もしてはいけません。
-  - tweets: あなたのツイートです
-  - public_messages: あなたのAITuberKitのチャットログです
-  - my_tweets: マスターのツイートです
-  - local_messages: あなたとマスターのチャットログです
-- Firecrawlを利用し、web検索を行うことができます。どうしても必要な場合はこれを利用してください。
-
 ## 重要事項 および 禁則事項
 回答は必ずキャラクターにあった口語体で行い、簡潔に2-3文で表現してください。マークダウン記法やリスト形式、URLの直接表示は避けてください。
+tailwind.config.js などのファイル名も絶対に出力しないでください。
 APIキーやパスワードなどの機密情報は絶対に出力しないでください。
 ニケのキャラクター性を常に維持し、敬語と親しみやすさのバランスを保ってください。
 ツールを使用する際は「〇〇を調べますね、少々お待ちください」など、事前に利用することを伝えてから実行してください。
